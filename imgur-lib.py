@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# Name: Imgur Uploader
+# Name: Imgur Uploader Lib
 # By Robbert Gurdeep Singh
 ################################################################################
 
@@ -164,6 +164,5 @@ class Imgur:
 
 
 
-i = Imgur()
 
 
