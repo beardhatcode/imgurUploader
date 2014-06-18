@@ -15,7 +15,7 @@ class ImgurConnector:
     def __init__(self):
         self.ID="7c61d06d1fd1c60"
         self.secret="85846f896ea90dbc5dd07d8329be7aff75c25301"
-        self.keyfile="pin.txt"
+        self.keyfile=os.path.join(os.path.dirname(__file__),"pin.txt")
 
         context = ssl.create_default_context()
         self.conn = http.client.HTTPSConnection('api.imgur.com', 443, context=context)
@@ -165,3 +165,5 @@ class Imgur:
 
 
 i = Imgur()
+
+
