@@ -20,7 +20,10 @@ class ImgurConnector:
         context = ssl.create_default_context()
         self.conn = http.client.HTTPSConnection('api.imgur.com', 443, context=context)
 
-        self.getToken()
+        if(os.path.isfile(self.keyfile)):
+            self.getToken()
+        else:
+            self.getToken(True)
 
 
     def GETRequest(self,what):
@@ -162,4 +165,3 @@ class Imgur:
 
 
 i = Imgur()
-print(i.uploadImage("logo.png"))
