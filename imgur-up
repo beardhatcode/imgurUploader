@@ -3,9 +3,10 @@
 # By Robber Gurdeep Singh
 ################################################################################
 
-import http.client,urllib.parse
+import http.client,urllib.parse,base64
 import ssl
 import json
+import os
 
 
 
@@ -43,9 +44,7 @@ class ImgurConnector:
         return data
 
 
-
     def POSTRequest(self,what,param):
-        #TODO: finish
         headers = {"Content-type": "application/x-www-form-urlencoded",
                     "Accept": "text/plain",
                     "Authorization":"Bearer "+self.accesdata["access_token"]}
@@ -54,13 +53,12 @@ class ImgurConnector:
 
         self.conn.request("POST", "/3/"+what,param,headers)
 
-
         response = self.conn.getresponse()
         data = response.read().decode("utf-8")
 
         if(response.status == 403):
             self.refreshToken()
-            return self.GETRequest(what)
+            return self.POSTRequest(what,param)
 
 
         data=json.loads(data)
@@ -136,17 +134,32 @@ class Imgur:
     def __init__(self):
         self.connector = ImgurConnector();
 
-    def changeImage(self,imgId,title=None,desc=None):
-        param = {"title":title}
+    def changeImageInfo(self,imgId,title=None,desc=None):
+        param = {}
+
+        if(title!=None):
+            param["title"]=title;
+
+        if(desc!=None):
+            param["description"]=desc
+
         return self.connector.POSTRequest("image/"+imgId,param)
 
 
-    def images(self,msg):
+    def listImages(self):
         return self.connector.GETRequest("account/me/images")["data"]
 
+    def uploadImage(self,path):
+        param={"type":"base64","name":os.path.basename(path)}
+        with open(path, "rb") as image_file:
+            param["image"] = base64.b64encode(image_file.read())
+
+
+        return self.connector.POSTRequest("image",param)
+
+
+
+
+
 i = Imgur()
-Iid = i.images("hey")[0]["id"]
-print(i.changeImage(Iid,input("title:")))
-
-
-
+print(i.uploadImage("logo.png"))
