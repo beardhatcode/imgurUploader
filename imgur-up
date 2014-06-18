@@ -132,3 +132,21 @@ class ImgurConnector:
         self.accesdata=data
 
 
+class Imgur:
+    def __init__(self):
+        self.connector = ImgurConnector();
+
+    def changeImage(self,imgId,title=None,desc=None):
+        param = {"title":title}
+        return self.connector.POSTRequest("image/"+imgId,param)
+
+
+    def images(self,msg):
+        return self.connector.GETRequest("account/me/images")["data"]
+
+i = Imgur()
+Iid = i.images("hey")[0]["id"]
+print(i.changeImage(Iid,input("title:")))
+
+
+
