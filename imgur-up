@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # Name: Imgur Uploader
-# By Robber Gurdeep Singh
+# By Robbert Gurdeep Singh
 ################################################################################
 
 import http.client,urllib.parse,base64
