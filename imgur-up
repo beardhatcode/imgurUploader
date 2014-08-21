@@ -1,0 +1,38 @@
+#!/usr/bin/python3
+# Name: Imgur upload argument
+# By Robbert Gurdeep Singh
+################################################################################
+
+from imgurlib import *
+
+import sys
+import os
+
+sys.argv[0:1]=[]
+
+succes=True
+files=[]
+
+for arg in sys.argv:
+    arg=arg.rstrip()
+    if not os.path.isfile(arg):
+        print(arg, " is not a file",file=sys.stderr)
+        succes=False
+    else:
+        files.append(arg)
+
+if not succes:
+    exit(1)
+else:
+    i = Imgur()
+    for f in files:
+        print("Uploading: ",f,end="",file=sys.stderr)
+        result=i.uploadImage(f)
+        if "success" in result and result["success"]:
+            print("  [success] ",file=sys.stderr)
+            print(result["data"]["link"])
+        else:
+            print("  [failed] ",file=sys.stderr)
+            print("           ",result["data"]["error"],file=sys.stderr)
+
+
